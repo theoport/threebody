@@ -9,4 +9,4 @@ t_nd = 79.91 * 365 * 24 * 3600 * 0.51  # seconds | orbital period of Alpha Centa
 
 # Net constants
 K1 = G * t_nd * m_nd / (r_nd ** 2 * v_nd)
-K2 = v_nd * t_nd
+K2 = v_nd * t_nd / r_nd
