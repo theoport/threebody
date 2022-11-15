@@ -11,7 +11,7 @@ def differential_equation(y):
     r_vector = x2 - x1
     r = np.linalg.norm(r_vector)
 
-    a1 = const.K1 * (init.body2_mass / r ** 3) * r_vector
-    a2 = const.K1 * (init.body1_mass / r ** 3) * r_vector * -1
+    a1 = (init.body2_mass / r ** 3) * r_vector
+    a2 = (init.body1_mass / r ** 3) * r_vector * -1
 
-    return np.concatenate((const.K2 * v1, a1, const.K2 * v2, a2))
+    return np.concatenate((v1, a1, v2, a2))
