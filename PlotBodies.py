@@ -9,9 +9,8 @@ fig = plt.figure(figsize=(15, 15))
 ax = fig.add_subplot(111, projection="3d")
 eta = np.concatenate((init.body1_position, init.body1_velocity, init.body2_position, init.body2_velocity))
 
-#plot settings
-cms_plot = 1
-
+# plot settings
+cms_plot = True
 
 
 def animate_func(i):
@@ -30,16 +29,18 @@ def animate_func(i):
 
     rcom_sol = (init.body1_mass * x1 + init.body2_mass * x2) / (init.body1_mass + init.body2_mass)
 
-    if cms_plot :
+    if cms_plot:
         # Find location of Alpha Centauri A w.r.t COM
         r1com_sol = x1 - rcom_sol
         # Find location of Alpha Centauri B w.r.t COM
         r2com_sol = x2 - rcom_sol
         ax.scatter(r1com_sol[0], r1com_sol[1], r1com_sol[2], color="darkblue")
         ax.scatter(r2com_sol[0], r2com_sol[1], r2com_sol[2], color="tab:red")
-    else :
+    else:
         ax.scatter(x1[0], x1[1], x1[2], color="darkblue")
         ax.scatter(x2[0], x2[1], x2[2], color="tab:red")
+
+    ax.text2D(0.9, 0.1, "Distance between the stars: " + str(np.linalg.norm(x1 - x2)), transform=ax.transAxes)#np.linalg.norm(x1[0] - x2[0]))
 
     eta = ode.runge_kutta(tb.differential_equation, eta, 0.05)
 
