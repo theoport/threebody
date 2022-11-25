@@ -1,52 +1,39 @@
 import numpy as np
 
 
-# here a function to set initial velocities yielding desired orbits
-def set_initial_velocities(r1, r2, m1, m2, e):
-    r = r2 - r1
+def create_initial_eta(initial_masses, number_of_bodies):
+    velocities = np.zeros((number_of_bodies, 3))
+    # momenta = np.zeros((number_of_bodies, 3))
+    # total_momentum = np.zeros(3)
+    # for i in range(number_of_bodies):
+    #     # velocities[i] = 2 * np.random.rand(3)
+    #     momenta[i] = velocities[i] + initial_masses[i]
+    #     total_momentum += momenta[i]
+    #
+    # for i in range(number_of_bodies):
+    #     momenta[i] = momenta[i] - total_momentum / number_of_bodies
+    #     velocities[i] = momenta[i] / initial_masses[i]
 
-    # calculate normal vector to plane of rotiation (ez if stars have same z-coord)
-    if r[2] == 0:
-        n = np.array([0, 0, 1])
-    else:
-        n = np.array([1, 1, -(r[0] + r[1]) / r[2]])
-        n = n / np.linalg.norm(n)
+    eta = np.zeros((number_of_bodies * 6))
 
-    # calculate directions of inital velocity (choose antiparallel)
-    v2 = np.cross(n, r)
-    v2 = v2 / np.linalg.norm(v2)
-    v1 = -v2
+    for i in range(number_of_bodies):
+        random_position = np.random.rand(3)
+        eta[3 * i] = random_position[0]
+        eta[3 * i + 1] = random_position[1]
+        eta[3 * i + 2] = random_position[2]
+        eta[3 * i + number_of_bodies * 3] = velocities[i][0]
+        eta[3 * i + number_of_bodies * 3 + 1] = velocities[i][1]
+        eta[3 * i + number_of_bodies * 3 + 2] = velocities[i][2]
 
-    # calculate initial speeds
-    M = m1 + m2
-    mu = m1 * m2 / M
-    v2 *= mu / m2 * np.sqrt((1 + e) * M / np.linalg.norm(r))
-    v1 *= mu / m1 * np.sqrt((1 + e) * M / np.linalg.norm(r))
-
-    return v1, v2
+    return eta
 
 
-body1_mass = 1.1  # Alpha Centauri A
-body2_mass = 0.907  # Alpha Centauri B
-eccentricity = 0  # determines orbital shape: e=0 makes circle, 0<e<1 makes ellipse, e>= 1 is unbound trajectory
-velocities_manual = False
+def create_initial_masses(number_of_bodies):
+    return np.full(number_of_bodies, 0.5)
+    # return np.random.rand(number_of_bodies) / 2 + 0.5
 
-body1_position = np.array([-1 / 2, 0, 0.2], dtype="float64")
-body2_position = np.array([1 / 2, 0, -0.2], dtype="float64")
 
-if velocities_manual:
-    body1_velocity = np.array([0, -1, 0], dtype="float64")
-    body2_velocity = np.array([0, 1, 0], dtype="float64")
+number_of_bodies = 2
 
-    # correct velocities to yield 0 total momentum
-    body1_momentum = body1_velocity * body1_mass
-    body2_momentum = body2_velocity * body2_mass
-
-    total_momentum = body1_momentum + body2_momentum
-
-    body1_velocity = (body1_momentum - total_momentum / 2) / body1_mass
-    body2_velocity = (body2_momentum - total_momentum / 2) / body2_mass
-
-else:
-    body1_velocity, body2_velocity = set_initial_velocities(body1_position, body2_position, body1_mass, body2_mass,
-                                                            eccentricity)
+masses = create_initial_masses(number_of_bodies)
+eta = create_initial_eta(masses, number_of_bodies)
