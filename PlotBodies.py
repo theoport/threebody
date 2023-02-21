@@ -25,13 +25,13 @@ def animate_func(i):
     ax.set_ylabel('y')
     ax.set_zlabel('z')
     # Setting Axes Limits
-    ax.set_xlim3d([-3, 3])
-    ax.set_ylim3d([-3, 3])
-    ax.set_zlim3d([-3, 3])
+    ax.set_xlim3d([-10, 10])
+    ax.set_ylim3d([-10, 10])
+    ax.set_zlim3d([-10, 10])
 
     ax.scatter(x, y, z, c=colors)
 
-    eta = ode.runge_kutta(tb.differential_equation, eta, 0.5)
+    eta = ode.runge_kutta(tb.differential_equation, eta, 0.05)
 
 
 

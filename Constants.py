@@ -11,6 +11,10 @@ P2SI_length = R_SI
 P2SI_time = 7,564e-7    # = sqrt(R_SI^3/(G_SI * Msun_SI^2))
 P2SI_mass = Msun_SI
 
+K1 = G_SI * T_SI * Msun_SI / (R_SI ** 2 * Ve_SI)
+K2 = Ve_SI * T_SI / R_SI
+
+
 
 
 
