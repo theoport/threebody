@@ -38,4 +38,5 @@ def create_initial_masses(number_of_bodies):
 number_of_bodies = 2
 
 masses = create_initial_masses(number_of_bodies)
-eta = create_normalised_initial_conditions(masses, number_of_bodies)
+# eta = create_normalised_initial_conditions(masses, number_of_bodies)
+eta = np.array([-0.5,   0,    0,    0.5,   0,    0,    0.01,  0.01,  0,   -0.05,  0,   -0.1 ])
