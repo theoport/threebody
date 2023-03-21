@@ -1,18 +1,42 @@
-import scipy as sci
+import numpy as np
 
-body1_mass = 1.1  # Alpha Centauri A
-body2_mass = 0.907  # Alpha Centauri B
 
-body1_position = sci.array([-0.5, 0, 0], dtype="float64")
-body2_position = sci.array([0.5, 0, 0], dtype="float64")
+def create_normalised_initial_conditions(initial_masses, number_of_bodies):
+    velocities = np.zeros((number_of_bodies, 3))
+    momenta = np.zeros((number_of_bodies, 3))
+    total_momentum = np.zeros(3)
 
-body1_velocity = sci.array([0.01, 0.01, 0], dtype="float64")
-body2_velocity = sci.array([-0.05, 0, -0.1], dtype="float64")
+    for i in range(number_of_bodies):
+        velocities[i] = 2 * np.random.rand(3)
+        momenta[i] = velocities[i] * initial_masses[i]
+        total_momentum += momenta[i]
 
-body1_momentum = body1_velocity * body1_mass
-body2_momentum = body2_velocity * body2_mass
+    for i in range(number_of_bodies):
+        momenta[i] = momenta[i] - total_momentum / number_of_bodies
+        velocities[i] = momenta[i] / initial_masses[i]
 
-total_momentum = body1_momentum + body2_momentum
+    eta = np.zeros((number_of_bodies * 6))
 
-body1_adjusted_velocity = ((body1_momentum - total_momentum) / 2) / body1_mass
-body2_adjusted_velocity = ((body2_momentum - total_momentum) / 2) / body2_mass
+    # eta looks like [p_x1, p_y1, p_z1, p_x2, p_y2, p_z2, ... v_x1, v_y1, v_z1, v_x2, v_y2, v_z2, ...]
+    # where p is position and v is velocity
+    for i in range(number_of_bodies):
+        random_position = np.random.rand(3)
+        eta[3 * i] = random_position[0]
+        eta[3 * i + 1] = random_position[1]
+        eta[3 * i + 2] = random_position[2]
+        eta[3 * i + number_of_bodies * 3] = velocities[i][0]
+        eta[3 * i + number_of_bodies * 3 + 1] = velocities[i][1]
+        eta[3 * i + number_of_bodies * 3 + 2] = velocities[i][2]
+
+    return eta
+
+
+def create_initial_masses(number_of_bodies):
+    return np.random.rand(number_of_bodies) / 2 + 0.5
+
+
+number_of_bodies = 2
+
+masses = create_initial_masses(number_of_bodies)
+# eta = create_normalised_initial_conditions(masses, number_of_bodies)
+eta = np.array([-0.5,   0,    0,    0.5,   0,    0,    0.01,  0.01,  0,   -0.05,  0,   -0.1 ])
