@@ -1,30 +1,18 @@
 import numpy as np
+import Constants as const
 import InitialData as init
-import Constants as constants
+from typing import List
 
 
-def differential_equation(y):
-    number_of_bodies = int(len(y) / 6)
-    acceleration = np.zeros((number_of_bodies, number_of_bodies, 3))
-    for i in range(number_of_bodies):
-        for j in range(number_of_bodies):
-            if j == i:
-                continue
-            position_1 = y[3 * i: 3 * i + 3]
-            position_2 = y[3 * j: 3 * j + 3]
-            # distance[2,5] is distance from 2 to 5
-            acceleration[i, j] = constants.K1 * init.masses[j] * (position_2 - position_1) / np.linalg.norm(position_2 - position_1) ** 3
+def differential_equation(eta: List[float]):
+    x1 = eta[:3]
+    x2 = eta[3:6]
+    v1 = eta[6:9]
+    v2 = eta[9:12]
+    r_vector = x2 - x1
+    r = np.linalg.norm(r_vector)
 
+    a1 = const.K1 * (init.masses[1] / r ** 3) * r_vector
+    a2 = const.K1 * (init.masses[0] / r ** 3) * r_vector * -1
 
-    # a[0] = force[0, 0] + ... + force[0,n]
-    a = np.sum(acceleration, axis=1)
-    a = a.flatten()
-    print("a")
-    print(a)
-
-
-    v = constants.K2 * y[number_of_bodies * 3:]
-    print("v")
-    print(v)
-
-    return np.concatenate((v, a * 3))
+    return np.concatenate((const.K2 * v1, const.K2 * v2, a1, a2))

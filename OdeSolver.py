@@ -1,4 +1,6 @@
-def runge_kutta(differential, eta, delta_t):
+from typing import List, Callable
+
+def runge_kutta(differential: Callable[[List[float], List[float]], List[float]],  eta: List[float], delta_t: float):
     y0 = eta
     k0 = differential(y0)
     y1 = y0 + k0 * delta_t / 2

@@ -13,15 +13,3 @@ P2SI_mass = Msun_SI
 
 K1 = G_SI * T_SI * Msun_SI / (R_SI ** 2 * Ve_SI)
 K2 = Ve_SI * T_SI / R_SI
-
-
-
-
-
-
-
-
-
-# Net constants (not needed anymore)
-# K1 = G * t_nd * m_nd / (r_nd ** 2 * v_nd)
-# K2 = v_nd * t_nd / r_nd

@@ -4,13 +4,24 @@ import numpy as np
 import InitialData as init
 import OdeSolver as ode
 import TwoBody as tb
+import NBody as nb
 
-fig = plt.figure(figsize=(15, 15))
-ax = fig.add_subplot(111, projection="3d")
-eta = init.eta
 
-# plot settings
-cms_plot = True
+def create_plot(config):
+
+    fig = plt.figure(figsize=(15, 15))
+    ax = fig.add_subplot(111, projection="3d")
+    eta = config.initial_eta
+
+    # plot settings
+    cms_plot = True
+
+
+    animate = animation.FuncAnimation(fig=fig, func=animate_func, interval=20)
+    animate.event_source.stop()
+    animate.event_source.start()
+
+    plt.show()
 
 
 def animate_func(i):
@@ -31,12 +42,4 @@ def animate_func(i):
 
     ax.scatter(x, y, z, c=colors)
 
-    eta = ode.runge_kutta(tb.differential_equation, eta, 0.05)
-
-
-
-animate = animation.FuncAnimation(fig=fig, func=animate_func, interval=20)
-animate.event_source.stop()
-animate.event_source.start()
-
-plt.show()
+    eta = ode.runge_kutta(nb.differential_equation, eta, 0.05)
