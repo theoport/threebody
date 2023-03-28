@@ -26,7 +26,6 @@ def create_plot(number_of_bodies: int):
 
 
 def _animate_func(i: int, eta: List[float], masses: List[float], ax):
-    print(eta)
     ax.clear()
     number_of_bodies = int(len(eta) / 6)
     x = eta[3 * np.arange(number_of_bodies)]
